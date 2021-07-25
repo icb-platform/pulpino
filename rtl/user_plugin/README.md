@@ -4,8 +4,8 @@ The user plugin is intended to be used by users to implement their own logic, an
 
 Only sources under `rtl` directory will be part of the SoC.
 
-Other directories / files can be created on users needs. E.g.
-- `tb` for IP level testbench sources
+Other directories / files can be created on users needs, e.g.
+- `tb` for IP level testbench resources
 
 
 ## Hierarchy
@@ -31,7 +31,7 @@ Other directories / files can be created on users needs. E.g.
  - `axi_slv`: AXI4 slave
    - Memory map: `32'h1A12_0000` ~ `32'h1A13_FFFF`
 
- - `axi-mstr`: AXI4 master
+ - `axi_mstr`: AXI4 master
    - Used to access memory space
 
  - `upio_*`: User Plugin IO<br>
@@ -41,10 +41,8 @@ Other directories / files can be created on users needs. E.g.
    - `upio_dir_o`: Outputs control to IO pads
      - `0`: Corresponding IO pad is input only
      - `1`: Corresponding IO pad is both intput and output
-   - Related RTL:
-     - [rtl/chip_top/pulpino_top_wrapper.sv](/rtl/chip_top/pulpino_top_wrapper.sv)
 
- - `int_o`: Interrupt output to CPU core
+ - `int_o`: Interruption output to CPU core
 
 
 ## Demos
@@ -78,11 +76,20 @@ Two simple demos have been implemented to show essential features.
       - Registers reading/writing
       - Simple data processing
       - Interruption control
-  - [upio_test](/sw/apps/user_plugin_tests/upio_test)<br>
+  - [upio_test](/sw/apps/user_plugin_tests/upio_test)
     - Demo features
       - Registers reading/writing
       - IO pad reading/writing
       - IO pad input/output control
+
+
+#### Run Demos
+
+```sh
+cd pulpino/build
+make apb_up_test.vsim
+make upio_test.vsim
+```
 
 
 ### AXI User Plugin
@@ -124,9 +131,9 @@ An user is free to implement his/her logic with given `user_plugin` interface. I
 
 ### Software
 
-An user is free to implement his/her software either by modifying existing one or add a new one.
+An user is free to implement his/her software by either modifying an existing one or adding a new one.
 
-#### How to Add a User's Test
+#### How to Add an User's Test
 
 Assume the user's test directory is called `user_test`
 
@@ -141,7 +148,7 @@ Assume the user's test directory is called `user_test`
    touch main.c
    # Edit main.c with your favourite editor.
    ```
-   You can add any source files.
+   More than one source files can be added.
 
 1. Create and edit `CMakeLists.txt` under `user_test` directory
    ```sh
@@ -155,7 +162,7 @@ Assume the user's test directory is called `user_test`
    ```
 
    - `user_test` is the application name. It can be any string, as long as it is not conflict with other application names.
-   - `main.c` is the source file. If there are more than one source file, write all of them here.
+   - `main.c` is the source file. If there are more than one source files, write all of them here.
    - `up_tests` is the label. To be consistent with other tests under `user_plugin_tests` just use `up_tests`.
    - `USER_TEST` is the test name. It can be any string, as long as it is not conflict with other tests names.
 
