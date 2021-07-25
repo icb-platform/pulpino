@@ -24,8 +24,8 @@ ln -s ../sw/cmake-configure.gcc.sh .
 To let the configure script find tools
 
 1. Setup PATH for simulator (ModelSim)
-1. Setup PATH for GNU toolchain<br>
-   [Get the GNU toolchain](https://github.com/icb-platform/ri5cy_gnu_toolchain/releases)
+1. Setup PATH for ETH GNU toolchain<br>
+   [Get the ETH GNU toolchain](https://github.com/icb-platform/ri5cy_gnu_toolchain/releases)
 
 
 ## Configure
@@ -33,44 +33,42 @@ To let the configure script find tools
 Modify the `cmake-configure.gcc.sh` to your needs and execute it inside the build directory.
 This will setup everything to perform simulations using ModelSim.
 
-1. `cmake-configure.gcc.sh` options.
+`cmake-configure.gcc.sh` options
 
-   1. `--core` option
-   
-      1. `ri5cy`
-   
-         It automatically selects the RISCY cores and compiles SW with all the PULP-extensions and the RV32IM support.
-         The GCC ETH compiler is needed and the GCC march flag set to "IMXpulpv2".
-   
-      1. `ri5cyfpu`
-   
-         It automatically selects the RISCY cores and compiles SW with all the PULP-extensions and the RV32IMF support.
-         The GCC ETH compiler is needed and he GCC march flag set to "IMFXpulpv2".
-   
-      1. `zeroriscy`
-   
-         It automatically selects the zero-riscy cores and compiles SW with the RV32IM support (march flag set to RV32IM).
+1. `--core` option
 
+   1. `ri5cy`
+
+      It automatically selects the RISCY cores and compiles SW with all the PULP-extensions and the RV32IM support.
+      The GCC ETH compiler is needed and the GCC march flag set to "IMXpulpv2".
+      
+   1. `ri5cyfpu`
+
+      It automatically selects the RISCY cores and compiles SW with all the PULP-extensions and the RV32IMF support.
+      The GCC ETH compiler is needed and he GCC march flag set to "IMFXpulpv2".
+
+   1. `zeroriscy`
+
+      It automatically selects the zero-riscy cores and compiles SW with the RV32IM support (march flag set to RV32IM).
+
+1. `--memload` option
+
+   1. `PRELOAD`
+
+      Let testbench load firmware to sram by writing to sram model directly. This is pure functional behavior.
+
+   1. `SPI`
+
+      Let testbench load firmware to sram through SPI slave.
+
+   1. `STANDALONE`
+
+      Let testbench boot PULPino from boot ROM, and the boot ROM loads firmware from the external flash.<br>
+      To use the external flash in testbench:
+      1. [Prepare flash vip](vip/spi_flash/README.md)
+      1. Set parameter `USE_W25Q16JV_MODEL` to 1 in [tb/tb_chip_top.sv](tb/tb_chip_top.sv)
 
 Activate the RVC flag in the cmake file if compressed instructions are desired.
-
-   1. `--memload` option
-
-      1. `PRELOAD`
-
-         Let testbench load firmware to sram by writing to sram model directly. This is pure functional behavior.
-
-      1. `SPI`
-
-         Let testbench load firmware to sram through SPI slave.
-
-      1. `STANDALONE`
-
-         Let testbench boot PULPino from boot ROM, and the boot ROM loads firmware from the external flash.<br>
-         To use the external flash in testbench:
-         1. [Prepare flash vip](vip/spi_flash/README.md)
-         1. Set parameter `USE_W25Q16JV_MODEL` to 1 in [tb/tb_chip_top.sv](tb/tb_chip_top.sv)
-
 
 E.g. To use `zeroriscy` cpu core, and let testbentch load firmware through SPI slave.
 Inside the `build` directory, execute
