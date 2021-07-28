@@ -4,7 +4,7 @@ This folder contains everything needed to synthesize and run PULPino on a ZedBoa
 
 Before build project, input
 
-    source  xilinx_2015_1.sh
+    source xilinx_2015_1.sh
 
 To select the ZedBoard，just input
 
