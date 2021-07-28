@@ -2,6 +2,10 @@
 
 This folder contains everything needed to synthesize and run PULPino on a ZedBoard and icbv1board.
 
+Before build project, input
+
+    source  xilinx_2015_1.sh
+
 To select the ZedBoard，just input
 
     make zedboard
