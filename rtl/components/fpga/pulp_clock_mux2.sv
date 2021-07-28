@@ -8,22 +8,20 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-module pulp_clock_gating
+module pulp_clock_mux2
 (
-    input  logic clk_i,
-    input  logic en_i,
-    input  logic test_en_i,
+    input  logic clk0_i,
+    input  logic clk1_i,
+    input  logic clk_sel_i,
     output logic clk_o
   );
 
-  logic clk_en;
-
-  always_latch
+  always_comb
   begin
-     if (clk_i == 1'b0)
-       clk_en <= en_i | test_en_i;
+    if (clk_sel_i == 1'b0)
+      clk_o = clk0_i;
+    else
+      clk_o = clk1_i;
   end
-
-  assign clk_o = clk_i & clk_en;
 
 endmodule
