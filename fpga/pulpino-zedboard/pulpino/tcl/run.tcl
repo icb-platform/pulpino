@@ -32,11 +32,11 @@ source ./tcl/ips_add_files.tcl
 if {$::env(USE_ZERO_RISCY)==0} {
  remove_files $SRC_ZERORISCY_REGFILE_FPGA
  remove_files $SRC_ZERORISCY
- #add_files -norecurse -scan_for_includes $SRC_RISCV
- #add_files -norecurse -scan_for_includes $SRC_RISCV_REGFILE_FPGA
+ add_files -norecurse -scan_for_includes $SRC_RISCV
+ add_files -norecurse -scan_for_includes $SRC_RISCV_REGFILE_FPGA
 } else {
- #remove_files $SRC_RISCV_REGFILE_FPGA
- #remove_files $SRC_RISCV
+ remove_files $SRC_RISCV_REGFILE_FPGA
+ remove_files $SRC_RISCV
  add_files -norecurse -scan_for_includes $SRC_ZERORISCY_REGFILE_FPGA
  add_files -norecurse -scan_for_includes $SRC_ZERORISCY
 }
