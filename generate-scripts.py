@@ -30,6 +30,11 @@ def execute_out(cmd, silent=False):
 if not (os.path.exists("ipstools") and os.path.isdir("ipstools")):
     print tcolors.ERROR + "ipstools does not exist, please run update-ips.py" + tcolors.ENDC
     sys.exit(1)
+else:
+    cwd = os.getcwd()
+    os.chdir("ipstools")
+    os.chdir(cwd)
+    import ipstools
 
 #if os.path.exists("ipstools") and os.path.isdir("ipstools"):
 #    cwd = os.getcwd()
