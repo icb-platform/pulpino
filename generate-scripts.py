@@ -27,16 +27,20 @@ def execute_out(cmd, silent=False):
     return out
 
 # download IPApproX tools in ./ipstools and import them
-if os.path.exists("ipstools") and os.path.isdir("ipstools"):
-    cwd = os.getcwd()
-    os.chdir("ipstools")
-    execute("git pull", silent=True)
-    execute("git checkout verilator-pulpino")
-    os.chdir(cwd)
-    import ipstools
-else:
-    execute("git clone git@github.com:wanjun199510/IPApproX ipstools -b verilator-pulpino")
-    import ipstools
+if not (os.path.exists("ipstools") and os.path.isdir("ipstools")):
+    print tcolors.ERROR + "ipstools does not exist, please run update-ips.py" + tcolors.ENDC
+    sys.exit(1)
+
+#if os.path.exists("ipstools") and os.path.isdir("ipstools"):
+#    cwd = os.getcwd()
+#    os.chdir("ipstools")
+#    execute("git pull", silent=True)
+#    execute("git checkout verilator-pulpino")
+#    os.chdir(cwd)
+#    import ipstools
+#else:
+#    execute("git clone git@github.com:wanjun199510/IPApproX ipstools -b verilator-pulpino")
+
 execute("mkdir -p vsim/vcompile/ips")
 execute("rm -rf vsim/vcompile/ips/*")
 
