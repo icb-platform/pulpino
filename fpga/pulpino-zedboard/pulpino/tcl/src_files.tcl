@@ -37,15 +37,8 @@ set SRC_PULPINO " \
 "
 
 # user_plugin
-set SRC_USER_PLUGIN " \
-   $RTL/user_plugin/rtl/apb_up.sv \
-   $RTL/user_plugin/rtl/axi_dummy_mstr.sv \
-   $RTL/user_plugin/rtl/axi_mem_word_rd.sv \
-   $RTL/user_plugin/rtl/axi_mem_word_wt.sv \
-   $RTL/user_plugin/rtl/axi_reg_word_rd.sv \
-   $RTL/user_plugin/rtl/axi_reg_word_wt.sv \
-   $RTL/user_plugin/rtl/axi_up.sv \
-   $RTL/user_plugin/rtl/axi_up_ctrl.sv \
-   $RTL/user_plugin/rtl/axi_up_if.sv \
-   $RTL/user_plugin/rtl/user_plugin.sv \
-"
+set SRC_USER_PLUGIN [glob -dir $RTL/user_plugin/rtl *.sv *.v]
+
+
+
+
