@@ -1,6 +1,6 @@
 #!/bin/bash
 export XILINX_HOME=Your_installation_location
-export XILINX_HOME=/home/wanjun/vivado/2015.1
+#export XILINX_HOME=/home/wanjun/vivado/2015.1
 if [ "$XILINX_HOME" = "Your_installation_location" ]; then
 	echo [ERROR]:please modify xilinx_2015_1.sh first
 	exit 1
