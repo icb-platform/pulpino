@@ -13,7 +13,6 @@ set SRC_COMPONENTS " \
    $RTL/components/fpga/pulp_clock_inverter.sv \
    $RTL/components/fpga/pulp_clock_mux2.sv \
    $RTL/components/generic_fifo.sv \
-   $RTL/components/sp_ram_banked.sv \
 "
 
 # pulpino
