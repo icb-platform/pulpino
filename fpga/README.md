@@ -14,6 +14,15 @@ or select the icbv1board
 
     make icbv1board
 
+This environment variable has to be set during compilation of all FPGA related components. If you accidentally forget to set the environment variable during part of the compilation process, you may end up with a mixed zedboard/zybo build which will not work correctly.
+
+The components that are affected by the BOARD variable are:
+
+    pulpemu
+    u-boot
+    devicetree
+    spiloader
+
 ## Requirements
 
 This synthesis flow has been tested with `Vivado 2015.1`, there is no guarantee

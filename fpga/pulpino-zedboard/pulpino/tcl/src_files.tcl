@@ -38,7 +38,3 @@ set SRC_PULPINO " \
 
 # user_plugin
 set SRC_USER_PLUGIN [glob -dir $RTL/user_plugin/rtl *.sv *.v]
-
-
-
-
