@@ -3,6 +3,31 @@ set IPS ../../../ips
 set FPGA_IPS ../ips
 set FPGA_RTL ../rtl
 
+proc findFiles { dir } { 
+     global result
+     if { [info exists result] } {
+         set result $result
+         } else {
+             set result ""
+         }
+     set files [glob -nocomplain -directory $dir *]
+     foreach f $files {
+        if {[file isfile $f]} {             
+                set fExt [file extension $f]    
+                if {[expr {$fExt==".v"}] || [expr {$fExt==".vh"}] || [expr {$fExt==".vhd"}] || [expr {$fExt==".sv"}]} { 
+                      if { "$result" == "" } {
+                       set result "$f" 
+                       } elseif { "$result" != "" } {    
+                       set result "$result $f"      
+                    }      
+                    }                         
+        } elseif {[file isdirectory $f]} {
+            findFiles $f
+        } 
+    }
+     return $result
+}
+
 # components
 set SRC_COMPONENTS " \
    $RTL/components/fpga/pulp_clock_gating.sv \
@@ -37,4 +62,4 @@ set SRC_PULPINO " \
 "
 
 # user_plugin
-set SRC_USER_PLUGIN [glob -dir $RTL/user_plugin/rtl *.sv *.v]
+set SRC_USER_PLUGIN [findFiles $RTL/user_plugin/rtl]
