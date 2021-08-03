@@ -62,4 +62,4 @@ set SRC_PULPINO " \
 "
 
 # user_plugin
-set SRC_USER_PLUGIN [findFiles $RTL/user_plugin]
+set SRC_USER_PLUGIN [findFiles $RTL/user_plugin/rtl]
