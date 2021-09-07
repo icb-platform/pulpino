@@ -140,33 +140,33 @@ module pulpino(
   //assign spi_clk_i = 1'b0;
   assign gpio_out[2:0] = gpio_out_r[2:0];
   assign gpio_out[3] = (cnt < 26'd2500_0000) ? 1'b1 : 1'b0 ;
-always @ (posedge clk) begin
-    if(0)
-        cnt <= 26'd0;
-    else if(cnt < 26'd5000_0000)
-        cnt <= cnt + 1'b1;
-    else
-        cnt <= 26'd0;
-end
+  always @ (posedge clk or negedge rst_n) begin
+  if(!rst_n)
+    cnt <= 26'd0;
+  else if(cnt < 26'd5000_0000)
+    cnt <= cnt + 1'b1;
+  else
+    cnt <= 26'd0;
+  end
 
-reg [3:0] counter;
-always@(posedge clk or negedge rst_n) begin
-if(!rst_n)
+  reg [3:0] counter;
+  always@(posedge clk or negedge rst_n) begin
+  if(!rst_n)
     counter <= 4'd0;
-else if(counter==4'd4)
+  else if(counter==4'd4)
     counter <= 4'd0;
-else
+  else
     counter <= counter + 1'd1;
-end
+  end
 
-always@(posedge clk or negedge rst_n) begin
-if(!rst_n)
+  always@(posedge clk or negedge rst_n) begin
+  if(!rst_n)
     usr_clk <= 4'd0;
-else if(counter==4'd4)
+  else if(counter==4'd4)
     usr_clk <= ~usr_clk;
-else
+  else
     usr_clk <= usr_clk;
-end
+  end
 
   // PULP SoC
   pulpino_top
