@@ -14,6 +14,7 @@ module pulpino(
 
   fetch_enable_n,
 
+  spi_clk_i,
   spi_cs_i,
   spi_mode_o,
   spi_sdo0_o,
@@ -60,9 +61,7 @@ module pulpino(
   trstn_i,
   tms_i,
   tdi_i,
-  tdo_o,
-  
-  spi_clk_i
+  tdo_o
   );
 
   // Clock and Reset
@@ -71,7 +70,7 @@ module pulpino(
 
   input         fetch_enable_n;
 
-  
+  input         spi_clk_i;
   input         spi_cs_i;
   output  [1:0] spi_mode_o;
   output        spi_sdo0_o;
@@ -113,7 +112,6 @@ module pulpino(
   output        sda_oen_o;
 
   output   [3:0]  gpio_out;
-  input           spi_clk_i;
  // output [31:0] gpio_in;
  // output [31:0] gpio_dir;
 
@@ -131,13 +129,12 @@ module pulpino(
    
   wire  [31:0] gpio_in;
   wire  [31:0] gpio_dir;
-  wire [31:0]  gpio_out_r;
+  wire  [31:0] gpio_out_r;
   
   reg          usr_clk;
-  reg  [25:0]  cnt ;
+  reg   [25:0] cnt ;
   reg   [3:0]  usr_cnt;
   
-  //assign spi_clk_i = 1'b0;
   assign gpio_out[2:0] = gpio_out_r[2:0];
   assign gpio_out[3] = (cnt < 26'd2500_0000) ? 1'b1 : 1'b0 ;
   always @ (posedge clk or negedge rst_n) begin
@@ -230,7 +227,7 @@ module pulpino(
     .sda_padoen_o      ( sda_oen_o         ),
 
     .gpio_in           ( gpio_in           ),
-    .gpio_out          ( gpio_out_r          ),
+    .gpio_out          ( gpio_out_r        ),
     .gpio_dir          ( gpio_dir          ),
     .gpio_padcfg       (                   ),
 
