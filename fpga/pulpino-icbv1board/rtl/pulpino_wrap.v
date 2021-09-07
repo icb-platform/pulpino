@@ -133,7 +133,6 @@ module pulpino(
   wire  [31:0] gpio_dir;
   wire [31:0]  gpio_out_r;
   
-  //wire          usr_clk;
   reg          usr_clk;
   reg  [25:0]  cnt ;
   reg   [3:0]  usr_cnt;
