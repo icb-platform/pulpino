@@ -60,7 +60,9 @@ module pulpino(
   trstn_i,
   tms_i,
   tdi_i,
-  tdo_o
+  tdo_o,
+  
+  spi_clk_i
   );
 
   // Clock and Reset
@@ -111,6 +113,7 @@ module pulpino(
   output        sda_oen_o;
 
   output   [3:0]  gpio_out;
+  input           spi_clk_i;
  // output [31:0] gpio_in;
  // output [31:0] gpio_dir;
 
@@ -121,20 +124,22 @@ module pulpino(
   input  tdi_i;
   output tdo_o;
 
-  parameter USE_ZERO_RISCY = 0;
+  parameter USE_ZERO_RISCY = 1;
   parameter RISCY_RV32F = 0;
-  parameter ZERO_RV32M = 0;
+  parameter ZERO_RV32M = 1;
   parameter ZERO_RV32E = 0;
    
   wire  [31:0] gpio_in;
   wire  [31:0] gpio_dir;
   wire [31:0]  gpio_out_r;
-  wire         spi_clk_i;
+  
+  //wire          usr_clk;
   reg          usr_clk;
   reg  [25:0]  cnt ;
   reg   [3:0]  usr_cnt;
   
-  assign spi_clk_i = clk;
+  // assign spi_clk_i = clk;
+  //assign spi_clk_i = 1'b0;
   assign gpio_out[2:0] = gpio_out_r[2:0];
   assign gpio_out[3] = (cnt < 26'd2500_0000) ? 1'b1 : 1'b0 ;
 always @ (posedge clk) begin
@@ -146,15 +151,23 @@ always @ (posedge clk) begin
         cnt <= 26'd0;
 end
 
-always @ (posedge clk) begin
-    if(!rst_n)
-        usr_cnt <= 4'd0;
-    else if(usr_cnt < 4'd4)
-        usr_cnt <= usr_cnt + 1'b1;
-    else begin
-        usr_cnt <= 4'd0;
-        usr_clk <= ~usr_clk;
-        end
+reg [3:0] counter;
+always@(posedge clk or negedge rst_n) begin
+if(!rst_n)
+    counter <= 4'd0;
+else if(counter==4'd4)
+    counter <= 4'd0;
+else
+    counter <= counter + 1'd1;
+end
+
+always@(posedge clk or negedge rst_n) begin
+if(!rst_n)
+    usr_clk <= 4'd0;
+else if(counter==4'd4)
+    usr_clk <= ~usr_clk;
+else
+    usr_clk <= usr_clk;
 end
 
   // PULP SoC
@@ -167,17 +180,17 @@ end
   )
   pulpino_i
   (
-    .clk               ( usr_clk               ),
+    .clk               ( usr_clk           ),//5MHz
     .rst_n             ( rst_n             ),
 
     .clk_sel_i         ( 1'b0              ),
     .clk_standalone_i  ( 1'b0              ),
 
     .testmode_i        ( 1'b0              ),
-    .fetch_enable_i    ( ~fetch_enable_n    ),
+    .fetch_enable_i    ( ~fetch_enable_n   ),
     .scan_enable_i     ( 1'b0              ),
 
-    .spi_clk_i         ( spi_clk_i         ),
+    .spi_clk_i         ( spi_clk_i         ), 
     .spi_cs_i          ( spi_cs_i          ),
     .spi_mode_o        ( spi_mode_o        ),
     .spi_sdo0_o        ( spi_sdo0_o        ),
