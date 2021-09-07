@@ -137,7 +137,6 @@ module pulpino(
   reg  [25:0]  cnt ;
   reg   [3:0]  usr_cnt;
   
-  // assign spi_clk_i = clk;
   //assign spi_clk_i = 1'b0;
   assign gpio_out[2:0] = gpio_out_r[2:0];
   assign gpio_out[3] = (cnt < 26'd2500_0000) ? 1'b1 : 1'b0 ;
