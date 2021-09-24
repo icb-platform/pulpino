@@ -16,46 +16,20 @@ module pulpino(
 
   spi_clk_i,
   spi_cs_i,
-//  spi_mode_o,
   spi_sdo0_o,
-//  spi_sdo1_o,
-//  spi_sdo2_o,
-//  spi_sdo3_o,
   spi_sdi0_i,
-//  spi_sdi1_i,
-//  spi_sdi2_i,
-//  spi_sdi3_i,
 
   spi_master_clk_o,
   spi_master_csn0_o,
   spi_master_csn1_o,
   spi_master_csn2_o,
   spi_master_csn3_o,
-//  spi_master_mode_o,
   spi_master_sdo0_o,
-//  spi_master_sdo1_o,
-//  spi_master_sdo2_o,
-//  spi_master_sdo3_o,
   spi_master_sdi0_i,
-//  spi_master_sdi1_i,
-//  spi_master_sdi2_i,
-//  spi_master_sdi3_i,
 
   uart_tx,
   uart_rx,
-//  uart_rts,
-//  uart_dtr,
-//  uart_cts,
-//  uart_dsr,
 
-  /*
-  scl_i,
-  scl_o,
-  scl_oen_o,
-  sda_i,
-  sda_o,
-  sda_oen_o,
-  */
   scl,
   sda,
 
@@ -76,46 +50,20 @@ module pulpino(
 
   input         spi_clk_i;
   input         spi_cs_i;
-//  output  [1:0] spi_mode_o;
   output        spi_sdo0_o;
-//  output        spi_sdo1_o;
-//  output        spi_sdo2_o;
-//  output        spi_sdo3_o;
   input         spi_sdi0_i;
-//  input         spi_sdi1_i;
-//  input         spi_sdi2_i;
-//  input         spi_sdi3_i;
 
   output        spi_master_clk_o;
   output        spi_master_csn0_o;
   output        spi_master_csn1_o;
   output        spi_master_csn2_o;
   output        spi_master_csn3_o;
-//  output  [1:0] spi_master_mode_o;
   output        spi_master_sdo0_o;
-//  output        spi_master_sdo1_o;
-//  output        spi_master_sdo2_o;
-//  output        spi_master_sdo3_o;
   input         spi_master_sdi0_i;
-//  input         spi_master_sdi1_i;
-//  input         spi_master_sdi2_i;
-//  input         spi_master_sdi3_i;
 
   output        uart_tx;
   input         uart_rx;
-//  output        uart_rts;
-//  output        uart_dtr;
-//  input         uart_cts;
-//  input         uart_dsr;
 
-/*
-  input         scl_i;
-  output        scl_o;
-  output        scl_oen_o;
-  input         sda_i;
-  output        sda_o;
-  output        sda_oen_o;
-  */
   inout        scl;
   inout        sda;
   
@@ -162,7 +110,6 @@ module pulpino(
   parameter ZERO_RV32E = 0;
    
   reg          usr_clk;
-  //reg   [25:0] cnt ;
   reg   [3:0]  usr_cnt;
   
   reg [3:0] counter;
@@ -194,7 +141,7 @@ module pulpino(
   )
   pulpino_i
   (
-    .clk               ( usr_clk           ),//5MHz
+    .clk               ( usr_clk           ),//12.5MHz
     .rst_n             ( rst_n             ),
 
     .clk_sel_i         ( 1'b0              ),
