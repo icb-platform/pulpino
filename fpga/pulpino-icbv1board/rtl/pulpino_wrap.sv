@@ -1,10 +1,10 @@
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
-// License, Version 0.51 (the â€œLicenseâ€?); you may not use this file except in
+// License, Version 0.51 (the "License"); you may not use this file except in
 // compliance with the License.  You may obtain a copy of the License at
 // http://solderpad.org/licenses/SHL-0.51. Unless required by applicable law
 // or agreed to in writing, software, hardware and materials distributed under
-// this License is distributed on an â€œAS ISâ€? BASIS, WITHOUT WARRANTIES OR
+// this License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
@@ -34,6 +34,7 @@ module pulpino(
   sda,
 
   gpio,
+  upio,
 
   tck_i,
   trstn_i,
@@ -69,6 +70,8 @@ module pulpino(
   
   inout  [20:0] gpio;
   
+  inout  [7:0]  upio;
+  
   //IIC
   wire         scl_i;
   wire         scl_o;
@@ -87,7 +90,7 @@ module pulpino(
   wire  [20:0] gpio_in;
   wire  [20:0] gpio_dir;
   wire  [20:0] gpio_out;
-  //
+  
   assign gpio_in = gpio;
   genvar i;
   generate
@@ -96,7 +99,20 @@ module pulpino(
            assign  gpio[i] = gpio_dir[i] ? gpio_out[i] : 1'bz;
         end
   endgenerate
-
+ 
+  //upio
+  wire  [7:0] upio_in;
+  wire  [7:0] upio_dir;
+  wire  [7:0] upio_out;
+  
+  assign upio_in = upio;
+  generate
+    for (i = 0; i < 7; i = i + 1)
+        begin: gen_upio
+           assign  upio[i] = upio_dir[i] ? upio_out[i] : 1'bz;
+        end
+  endgenerate
+  
   // JTAG signals
   input  tck_i;
   input  trstn_i;
@@ -196,6 +212,10 @@ module pulpino(
     .gpio_out          ( gpio_out          ),
     .gpio_dir          ( gpio_dir          ),
     .gpio_padcfg       (                   ),
+    
+    .upio_in_i         ( upio_in           ),
+    .upio_out_o        ( upio_out          ),
+    .upio_dir_o        ( upio_dir          ),
 
     .tck_i             ( tck_i             ),
     .trstn_i           ( trstn_i           ),
