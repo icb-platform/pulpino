@@ -2,7 +2,12 @@
 // Solderpad Hardware License, Version 0.51, see LICENSE for details.
 // SPDX-License-Identifier: SHL-0.51
 
-module pad_io_pd
+// *_h: horizontal direction, 
+//      should be placed at the left and right sides of the chip.
+// *_v: vertical direction, 
+//      should be placed at the bottom and top sides of the chip.
+
+module _pad_io_pd
 (
   input  logic tie0,
   input  logic tie1,
@@ -33,8 +38,50 @@ module pad_io_pd
 
 endmodule
 
+module pad_io_pd_h
+(
+  input  logic tie0,
+  input  logic tie1,
+  inout  logic PAD,
+  input  logic OEN,
+  input  logic I,
+  output logic O
+);
 
-module pad_io
+ _pad_io_pd pad(
+   .tie0(tie0),
+   .tie1(tie1),
+   .PAD (PAD ),
+   .OEN (OEN ),
+   .I   (I   ),
+   .O   (O   )
+ );
+
+endmodule
+
+module pad_io_pd_v
+(
+  input  logic tie0,
+  input  logic tie1,
+  inout  logic PAD,
+  input  logic OEN,
+  input  logic I,
+  output logic O
+);
+
+ _pad_io_pd pad(
+   .tie0(tie0),
+   .tie1(tie1),
+   .PAD (PAD ),
+   .OEN (OEN ),
+   .I   (I   ),
+   .O   (O   )
+ );
+
+endmodule
+
+
+module _pad_io
 (
   input  tie0,
   input  tie1,
@@ -63,8 +110,50 @@ module pad_io
 
 endmodule
 
+module pad_io_h
+(
+  input  tie0,
+  input  tie1,
+  inout  logic PAD,
+  input  logic OEN,
+  input  logic I,
+  output logic O
+);
 
-module pad_clk_in
+  _pad_io pad(
+   .tie0(tie0),
+   .tie1(tie1),
+   .PAD (PAD ),
+   .OEN (OEN ),
+   .I   (I   ),
+   .O   (O   )
+  );
+
+endmodule
+
+module pad_io_v
+(
+  input  tie0,
+  input  tie1,
+  inout  logic PAD,
+  input  logic OEN,
+  input  logic I,
+  output logic O
+);
+
+  _pad_io pad(
+   .tie0(tie0),
+   .tie1(tie1),
+   .PAD (PAD ),
+   .OEN (OEN ),
+   .I   (I   ),
+   .O   (O   )
+  );
+
+endmodule
+
+
+module _pad_clk_in
 (
   input  logic tie0,
   input  logic tie1,
@@ -82,5 +171,39 @@ module pad_clk_in
        1         1
  */ 
   buf (O, PAD);
+
+endmodule
+
+module pad_clk_in_h
+(
+  input  logic tie0,
+  input  logic tie1,
+  input  logic PAD,
+  output logic O
+);
+
+  _pad_clk_in pad(
+    .tie0(tie0),
+    .tie1(tie1),
+    .PAD (PAD ),
+    .O   (O   )
+  );
+
+endmodule
+
+module pad_clk_in_v
+(
+  input  logic tie0,
+  input  logic tie1,
+  input  logic PAD,
+  output logic O
+);
+
+  _pad_clk_in pad(
+    .tie0(tie0),
+    .tie1(tie1),
+    .PAD (PAD ),
+    .O   (O   )
+  );
 
 endmodule
