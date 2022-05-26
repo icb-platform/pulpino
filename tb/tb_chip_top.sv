@@ -294,11 +294,11 @@ module tb_chip_top(input wire s_clk, ExitStatus exit_status_if);
     s_rst_n      = 1'b0;
     fetch_enable = 1'b0;
 
-    #500ns;
+    #501ns;
 
     s_rst_n = 1'b1;
 
-    #500ns;
+    #501ns;
     if (use_qspi)
       spi_enable_qpi();
 
