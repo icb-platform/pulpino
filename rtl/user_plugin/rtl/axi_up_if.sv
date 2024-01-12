@@ -24,7 +24,11 @@
 
 module axi_up_if
 #(
-    parameter REG_SIZE_WIDTH = 16
+    parameter REG_SIZE_WIDTH = 16,
+    parameter AXI_ADDR_WIDTH = 32,
+    parameter AXI_DATA_WIDTH = 64,
+    parameter AXI_SLAVE_ID_WIDTH = 6,
+    parameter AXI_USER_WIDTH = 6
 )
 (
     input logic                           ACLK,
@@ -33,8 +37,8 @@ module axi_up_if
     AXI_BUS.Slave                         slv,
 
     //user defined signals -------------------------------
-    output logic [slv.AXI_DATA_WIDTH - 1:0]  src_addr_o   ,        // source address register
-    output logic [slv.AXI_DATA_WIDTH - 1:0]  dst_addr_o   ,        // destination address register
+    output logic [AXI_DATA_WIDTH - 1:0]  src_addr_o   ,        // source address register
+    output logic [AXI_DATA_WIDTH - 1:0]  dst_addr_o   ,        // destination address register
     output logic [REG_SIZE_WIDTH - 1:0]      size_o       ,        // process byte number
     output logic                             ctrl_int_en_o,        // interrupt enable output
     output logic                             cmd_clr_int_pulse_o,  // clear int signal (pulse)
@@ -43,21 +47,22 @@ module axi_up_if
     input  logic                             status_busy_i,        // status busy
     input  logic                             status_int_pending_i  // status int pending
 );
+    localparam AXI_STRB_WIDTH = AXI_DATA_WIDTH/8;
 
     logic                           s_write;
     logic [`WORD_ADDR_WIDTH - 1:0]  s_w_word_addr;
-    logic [slv.AXI_DATA_WIDTH-1:0]  s_wdata;
-    logic [slv.AXI_STRB_WIDTH-1:0]  s_wstrb;
+    logic [AXI_DATA_WIDTH-1:0]      s_wdata;
+    logic [AXI_STRB_WIDTH-1:0]      s_wstrb;
 
     logic [`WORD_ADDR_WIDTH - 1:0]  s_r_word_addr;
-    logic [slv.AXI_DATA_WIDTH-1:0]  s_rdata;
+    logic [AXI_DATA_WIDTH-1:0]  s_rdata;
 
     axi_reg_word_rd
     #(
-        .AXI4_ADDR_WIDTH ( slv.AXI_ADDR_WIDTH ),
-        .AXI4_DATA_WIDTH ( slv.AXI_DATA_WIDTH ),
-        .AXI4_ID_WIDTH   ( slv.AXI_ID_WIDTH   ),
-        .AXI4_USER_WIDTH ( slv.AXI_USER_WIDTH ),
+        .AXI4_ADDR_WIDTH ( AXI_ADDR_WIDTH ),
+        .AXI4_DATA_WIDTH ( AXI_DATA_WIDTH     ),
+        .AXI4_ID_WIDTH   ( AXI_SLAVE_ID_WIDTH   ),
+        .AXI4_USER_WIDTH ( AXI_USER_WIDTH ),
 
         .WORD_ADDR_WIDTH ( `WORD_ADDR_WIDTH   )
     )
@@ -95,10 +100,10 @@ module axi_up_if
 
     axi_reg_word_wt
     #(
-        .AXI4_ADDR_WIDTH ( slv.AXI_ADDR_WIDTH ),
-        .AXI4_DATA_WIDTH ( slv.AXI_DATA_WIDTH ),
-        .AXI4_ID_WIDTH   ( slv.AXI_ID_WIDTH   ),
-        .AXI4_USER_WIDTH ( slv.AXI_USER_WIDTH ),
+        .AXI4_ADDR_WIDTH ( AXI_ADDR_WIDTH ),
+        .AXI4_DATA_WIDTH ( AXI_DATA_WIDTH ),
+        .AXI4_ID_WIDTH   ( AXI_SLAVE_ID_WIDTH   ),
+        .AXI4_USER_WIDTH ( AXI_USER_WIDTH ),
 
         .WORD_ADDR_WIDTH ( `WORD_ADDR_WIDTH   )
     )
@@ -161,11 +166,11 @@ module axi_up_if
              begin
                  case (s_w_word_addr)
                      `REG_SRC_ADDR:
-                         for (int i = 0; i < slv.AXI_STRB_WIDTH; i++)
+                         for (int i = 0; i < AXI_STRB_WIDTH; i++)
                              if (s_wstrb[i])
                                  src_addr_o[(i * 8) +: 8] <= s_wdata[(i * 8) +: 8];
                      `REG_DST_ADDR:
-                         for (int i = 0; i < slv.AXI_STRB_WIDTH; i++)
+                         for (int i = 0; i < AXI_STRB_WIDTH; i++)
                              if (s_wstrb[i])
                                  dst_addr_o[(i * 8) +: 8] <= s_wdata[(i * 8) +: 8];
                      `REG_SIZE:
@@ -215,7 +220,7 @@ module axi_up_if
     // User reg read
     //
     // Reg Ctrl
-    logic [slv.AXI_DATA_WIDTH - 1: 0] s_ctrl;
+    logic [AXI_DATA_WIDTH - 1: 0] s_ctrl;
 
     always_comb
     begin
@@ -224,7 +229,7 @@ module axi_up_if
     end
 
     // Reg Status
-    logic [slv.AXI_DATA_WIDTH - 1: 0] s_status;
+    logic [AXI_DATA_WIDTH - 1: 0] s_status;
 
     always_comb
     begin

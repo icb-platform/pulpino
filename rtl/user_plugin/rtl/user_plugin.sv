@@ -1,5 +1,11 @@
 
 module user_plugin
+#(
+    parameter AXI_ADDR_WIDTH = 32,
+    parameter AXI_DATA_WIDTH = 64,
+    parameter AXI_SLAVE_ID_WIDTH = 6,
+    parameter AXI_USER_WIDTH = 6
+)
 (
     // Common clk/rst
     input logic        clk_i,
@@ -47,7 +53,14 @@ module user_plugin
         .int_o      ( apb_up_int_o        )
     );
 
-    axi_up axi_up_i
+    axi_up 
+    #(
+        .AXI_ADDR_WIDTH     ( AXI_ADDR_WIDTH     ),
+        .AXI_DATA_WIDTH     ( AXI_DATA_WIDTH     ),
+        .AXI_SLAVE_ID_WIDTH ( AXI_SLAVE_ID_WIDTH ),
+        .AXI_USER_WIDTH     ( AXI_USER_WIDTH     )
+    )
+    axi_up_i
     (
         .ACLK    ( clk_i        ),
         .ARESETn ( rst_n        ),
