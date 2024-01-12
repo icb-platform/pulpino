@@ -568,6 +568,7 @@ module peripherals
       .AXI_ADDR_WIDTH     ( AXI_ADDR_WIDTH     ),
       .AXI_DATA_WIDTH     ( AXI_DATA_WIDTH     ),
       .AXI_SLAVE_ID_WIDTH ( AXI_SLAVE_ID_WIDTH ),
+      .AXI_MASTER_ID_WIDTH ( AXI_MASTER_ID_WIDTH ),
       .AXI_USER_WIDTH     ( AXI_USER_WIDTH     )
   )
   user_plugin_i

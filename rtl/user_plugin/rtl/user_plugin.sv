@@ -4,6 +4,7 @@ module user_plugin
     parameter AXI_ADDR_WIDTH = 32,
     parameter AXI_DATA_WIDTH = 64,
     parameter AXI_SLAVE_ID_WIDTH = 6,
+    parameter AXI_MASTER_ID_WIDTH = 6,
     parameter AXI_USER_WIDTH = 6
 )
 (
@@ -58,6 +59,7 @@ module user_plugin
         .AXI_ADDR_WIDTH     ( AXI_ADDR_WIDTH     ),
         .AXI_DATA_WIDTH     ( AXI_DATA_WIDTH     ),
         .AXI_SLAVE_ID_WIDTH ( AXI_SLAVE_ID_WIDTH ),
+        .AXI_MASTER_ID_WIDTH ( AXI_MASTER_ID_WIDTH ),
         .AXI_USER_WIDTH     ( AXI_USER_WIDTH     )
     )
     axi_up_i
