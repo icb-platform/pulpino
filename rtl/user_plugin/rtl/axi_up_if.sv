@@ -27,7 +27,7 @@ module axi_up_if
     parameter REG_SIZE_WIDTH = 16,
     parameter AXI_ADDR_WIDTH = 32,
     parameter AXI_DATA_WIDTH = 64,
-    parameter AXI_SLAVE_ID_WIDTH = 6,
+    parameter AXI_SLAVE_ID_WIDTH = 10,
     parameter AXI_USER_WIDTH = 6
 )
 (
