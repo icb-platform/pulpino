@@ -1,7 +1,11 @@
 
 module axi_up_ctrl
 #(
-    parameter REG_SIZE_WIDTH = 16
+    parameter REG_SIZE_WIDTH = 16,
+    parameter AXI_ADDR_WIDTH = 32,
+    parameter AXI_DATA_WIDTH = 64,
+    parameter AXI_MASTER_ID_WIDTH = 6,
+    parameter AXI_USER_WIDTH = 6
 )
 (
     input logic     ACLK,
@@ -10,8 +14,8 @@ module axi_up_ctrl
     AXI_BUS.Master  mstr,
 
     // User signals
-    input  logic [mstr.AXI_ADDR_WIDTH-1:0]  src_addr_i,
-    input  logic [mstr.AXI_ADDR_WIDTH-1:0]  dst_addr_i,
+    input  logic [AXI_ADDR_WIDTH-1:0]  src_addr_i,
+    input  logic [AXI_ADDR_WIDTH-1:0]  dst_addr_i,
     input  logic [REG_SIZE_WIDTH-1:0]       size_i,
     input  logic                            ctrl_int_en_i,
     input  logic                            cmd_clr_int_pulse_i,
@@ -26,22 +30,22 @@ module axi_up_ctrl
     // Data Reading / Processing / Writing //
     /////////////////////////////////////////
 
-    logic [mstr.AXI_ADDR_WIDTH - 2 - 1: 0] r_r_word_addr;  // Read address by word
-    logic [mstr.AXI_ADDR_WIDTH - 2 - 1: 0] r_w_word_addr;  // Write address by word
-    logic [REG_SIZE_WIDTH - 2 - 1: 0]      r_word_size;    // Remaining number of words
+    logic [AXI_ADDR_WIDTH - 2 - 1: 0] r_r_word_addr;  // Read address by word
+    logic [AXI_ADDR_WIDTH - 2 - 1: 0] r_w_word_addr;  // Write address by word
+    logic [REG_SIZE_WIDTH - 2 - 1: 0] r_word_size;    // Remaining number of words
 
-    logic                              s_r_req;  // Read memory request
-    logic [mstr.AXI_DATA_WIDTH - 1: 0] s_r_data;
-    logic                              s_r_gnt;  // Read memory grant
+    logic                             s_r_req;  // Read memory request
+    logic [AXI_DATA_WIDTH     - 1: 0] s_r_data;
+    logic                             s_r_gnt;  // Read memory grant
 
-    logic                              s_w_req;  // Write memory request
-    logic [mstr.AXI_DATA_WIDTH - 1: 0] s_w_data;
-    logic                              s_w_data_store;
-    logic [mstr.AXI_DATA_WIDTH - 1: 0] r_w_data;
-    logic                              s_w_gnt;  // Write memory grant
+    logic                             s_w_req;  // Write memory request
+    logic [AXI_DATA_WIDTH     - 1: 0] s_w_data;
+    logic                             s_w_data_store;
+    logic [AXI_DATA_WIDTH     - 1: 0] r_w_data;
+    logic                             s_w_gnt;  // Write memory grant
 
-    logic                              s_load;
-    logic                              s_nxt_word;
+    logic                             s_load;
+    logic                             s_nxt_word;
 
     // A very simple process
     assign s_w_data = {s_r_data[$size(s_r_data) - 2: 0], 1'b0};
@@ -67,8 +71,8 @@ module axi_up_ctrl
             unique case (1'b1)
                 s_load:
                 begin
-                    r_r_word_addr <= src_addr_i[mstr.AXI_ADDR_WIDTH-1:2];
-                    r_w_word_addr <= dst_addr_i[mstr.AXI_ADDR_WIDTH-1:2];
+                    r_r_word_addr <= src_addr_i[AXI_ADDR_WIDTH-1:2];
+                    r_w_word_addr <= dst_addr_i[AXI_ADDR_WIDTH-1:2];
                     r_word_size   <= size_i[REG_SIZE_WIDTH-1:2];
                 end
                 s_nxt_word:
@@ -178,10 +182,10 @@ module axi_up_ctrl
 
     axi_mem_word_rd
     #(
-        .AXI4_ADDR_WIDTH ( mstr.AXI_ADDR_WIDTH ),
-        .AXI4_DATA_WIDTH ( mstr.AXI_DATA_WIDTH ),
-        .AXI4_ID_WIDTH   ( mstr.AXI_ID_WIDTH   ),
-        .AXI4_USER_WIDTH ( mstr.AXI_USER_WIDTH )
+        .AXI4_ADDR_WIDTH ( AXI_ADDR_WIDTH ),
+        .AXI4_DATA_WIDTH ( AXI_DATA_WIDTH ),
+        .AXI4_ID_WIDTH   ( AXI_MASTER_ID_WIDTH   ),
+        .AXI4_USER_WIDTH ( AXI_USER_WIDTH )
     )
     mem_rd_i
     (
@@ -218,10 +222,10 @@ module axi_up_ctrl
 
     axi_mem_word_wt
     #(
-        .AXI4_ADDR_WIDTH ( mstr.AXI_ADDR_WIDTH ),
-        .AXI4_DATA_WIDTH ( mstr.AXI_DATA_WIDTH ),
-        .AXI4_ID_WIDTH   ( mstr.AXI_ID_WIDTH   ),
-        .AXI4_USER_WIDTH ( mstr.AXI_USER_WIDTH )
+        .AXI4_ADDR_WIDTH ( AXI_ADDR_WIDTH ),
+        .AXI4_DATA_WIDTH ( AXI_DATA_WIDTH ),
+        .AXI4_ID_WIDTH   ( AXI_MASTER_ID_WIDTH   ),
+        .AXI4_USER_WIDTH ( AXI_USER_WIDTH )
     )
     mem_wt_i
     (

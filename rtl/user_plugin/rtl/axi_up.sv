@@ -1,6 +1,13 @@
 `define REG_SIZE_WIDTH 15  // At most 32KB
 
 module axi_up
+#(
+    parameter AXI_ADDR_WIDTH = 32,
+    parameter AXI_DATA_WIDTH = 64,
+    parameter AXI_SLAVE_ID_WIDTH = 6,
+    parameter AXI_MASTER_ID_WIDTH = 6,
+    parameter AXI_USER_WIDTH = 6
+)
 (
     input logic     ACLK,
     input logic     ARESETn,
@@ -11,18 +18,22 @@ module axi_up
     output  logic   int_o
 );
 
-    logic [mstr.AXI_ADDR_WIDTH - 1: 0] s_src_addr;
-    logic [mstr.AXI_ADDR_WIDTH - 1: 0] s_dst_addr;
-    logic [`REG_SIZE_WIDTH - 1: 0]     s_size;
-    logic                              s_ctrl_int_en;
-    logic                              s_cmd_clr_int_pulse;
-    logic                              s_cmd_trigger_pulse;
-    logic                              s_status_busy;
-    logic                              s_status_int_pending;
+    logic [AXI_ADDR_WIDTH  - 1: 0]  s_src_addr;
+    logic [AXI_ADDR_WIDTH  - 1: 0]  s_dst_addr;
+    logic [`REG_SIZE_WIDTH - 1: 0]  s_size;
+    logic                           s_ctrl_int_en;
+    logic                           s_cmd_clr_int_pulse;
+    logic                           s_cmd_trigger_pulse;
+    logic                           s_status_busy;
+    logic                           s_status_int_pending;
 
     axi_up_if
     #(
-        .REG_SIZE_WIDTH( `REG_SIZE_WIDTH )
+        .REG_SIZE_WIDTH     ( `REG_SIZE_WIDTH     ),
+        .AXI_ADDR_WIDTH     ( AXI_ADDR_WIDTH      ),
+        .AXI_DATA_WIDTH     ( AXI_DATA_WIDTH      ),
+        .AXI_SLAVE_ID_WIDTH ( AXI_SLAVE_ID_WIDTH  ),
+        .AXI_USER_WIDTH     ( AXI_USER_WIDTH      )
     )
     if_i
     (
@@ -44,7 +55,11 @@ module axi_up
 
     axi_up_ctrl
     #(
-        .REG_SIZE_WIDTH ( `REG_SIZE_WIDTH )
+        .REG_SIZE_WIDTH      ( `REG_SIZE_WIDTH     ),
+        .AXI_ADDR_WIDTH      ( AXI_ADDR_WIDTH      ),
+        .AXI_DATA_WIDTH      ( AXI_DATA_WIDTH      ),
+        .AXI_MASTER_ID_WIDTH ( AXI_MASTER_ID_WIDTH ),
+        .AXI_USER_WIDTH      ( AXI_USER_WIDTH      )
     )
     ctrl_i
     (

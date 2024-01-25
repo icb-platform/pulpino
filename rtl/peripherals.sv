@@ -563,7 +563,15 @@ module peripherals
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
-  user_plugin user_plugin_i
+  user_plugin 
+  #(
+      .AXI_ADDR_WIDTH      ( AXI_ADDR_WIDTH      ),
+      .AXI_DATA_WIDTH      ( AXI_DATA_WIDTH      ),
+      .AXI_SLAVE_ID_WIDTH  ( AXI_SLAVE_ID_WIDTH  ),
+      .AXI_MASTER_ID_WIDTH ( AXI_MASTER_ID_WIDTH ),
+      .AXI_USER_WIDTH      ( AXI_USER_WIDTH      )
+  )
+  user_plugin_i
   (
     .clk_i      ( clk_int[8] ),
     .rst_n      ( rst_n      ),
